@@ -1,0 +1,9 @@
+1. File > invalidate cache and restart: invalidate and restart
+2. File > close project
+3. use terminal and go to project folder and do the followings:
+a. cd app
+b. rm app.iml
+c. cd ..
+d. rm -r .idea
+e. rm 'My Application.iml'
+4. in android studio: open existing project
