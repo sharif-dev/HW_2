@@ -29,14 +29,12 @@
             android:textOff="@string/alarm_is_off"
             android:textOn="@string/alarm_is_on" />
 
-        <EditText
+        <TextView
             android:id="@+id/et1"
             android:inputType="time"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:hint="@string/time_to_alarm"
-            android:textColor="@color/colorAccent"
-            android:textStyle="italic" />
+            android:text="@string/no_time_picked" />
     </LinearLayout>
 
     <LinearLayout

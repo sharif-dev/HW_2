@@ -1,13 +1,20 @@
 package com.example.myapplication;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 
 import android.util.Log;
 import android.view.View;
@@ -17,16 +24,19 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener{
 
-    final String TAG = getClass().getSimpleName();
+    final String TAG = "MainActivity";
 
     private Switch sw1,sw2, sw3;
-    private EditText et1, et2, et3;
+    private EditText et2, et3;
+    private TextView et1;
     private Button getBtn;
 
     @Override
@@ -36,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         sw1 = (Switch)findViewById(R.id.switch1);
         sw2 = (Switch)findViewById(R.id.switch2);
         sw3 = (Switch)findViewById(R.id.switch3);
-        et1 = (EditText)findViewById(R.id.et1);
+        et1 = (TextView)findViewById(R.id.et1);
         et2 = (EditText)findViewById(R.id.et2);
         et3 = (EditText)findViewById(R.id.et3);
         getBtn = (Button)findViewById(R.id.getBtn);
@@ -48,19 +58,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-//                alarm service should run
                     Log.d(TAG, "Alarm on");
-                    String timeToAlarm = et1.getText().toString();
-//                    todo sabrine:
-//                    1. change string to time value
-//                    2. if any error : make switch off & toast error
-//                    3. else : turn on the alarm
-
+                    ConfigTimePicker();
                 }
                 else {
                     Log.d(TAG, "Alarm off");
-//                    todo Sabrine:
-//                    turn off the alarm
+                    ConfigCancelAlarm();
                 }
             }
         });
@@ -137,5 +140,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void ConfigTimePicker() {
+        DialogFragment timepicker = new TimePicker();
+        timepicker.show(getSupportFragmentManager(), "time picker");
+    }
 
+    private void ConfigCancelAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
+        et1.setText("Alarm Canceled");
+    }
+
+    @Override
+    public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
+
+        UpdateTimeTextView(c);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            StartAlarm(c);
+        }
+    }
+
+    private void UpdateTimeTextView(Calendar c) {
+        String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
+        et1.setText("Alarm Set For: " + time);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void StartAlarm(Calendar c) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
 }
