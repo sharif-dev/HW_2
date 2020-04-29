@@ -9,4 +9,17 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="alarm">Alarm :</string>
+    <string name="alarm_is_off">Alarm is OFF</string>
+    <string name="alarm_is_on">alarm is ON</string>
+    <string name="shake">Shake :</string>
+    <string name="shake_is_off">shake is OFF</string>
+    <string name="shake_is_on">shake is ON</string>
+    <string name="sleep">Sleep :</string>
+    <string name="sleep_is_off">Sleep is OFF</string>
+    <string name="sleep_is_on">sleep is ON</string>
+    <string name="time_to_alarm">Time to alarm</string>
+    <string name="degree_to_sleep">Degree to sleep</string>
+    <string name="sensibility_to_shake">Sensibility to shake</string>
+    <string name="check_all">Check all</string>
 </resources>
