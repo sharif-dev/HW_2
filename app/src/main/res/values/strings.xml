@@ -22,4 +22,8 @@
     <string name="degree_to_sleep">Degree to sleep</string>
     <string name="sensibility_to_shake">Sensibility to shake</string>
     <string name="check_all">Check all</string>
+
+    <string name="no_time_picked">No Time Picked</string>
+    <string name="set_time">Set The Time</string>
+    <string name="cancel_time">Cancel The Alarm</string>
 </resources>
