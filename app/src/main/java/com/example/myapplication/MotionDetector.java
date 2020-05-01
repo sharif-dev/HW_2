@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -69,10 +70,17 @@ public class MotionDetector extends Service implements SensorEventListener {
     }
 
     private void executeShakeAction() {
-        Toast.makeText(getApplicationContext(), "Shake detected", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "Shake detected", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "Shake detected");
-
-
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(
+                PowerManager.SCREEN_BRIGHT_WAKE_LOCK|
+                PowerManager.FULL_WAKE_LOCK|
+                PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                "MyApp::MotionDetection");
+//        PARTIAL_WAKE_LOCK, FULL_WAKE_LOCK, SCREEN_DIM_WAKE_LOCK, SCREEN_BRIGHT_WAKE_LOCK
+//        todo
+        wakeLock.acquire(1000);
 
     }
 
