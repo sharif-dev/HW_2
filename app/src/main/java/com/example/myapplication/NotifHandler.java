@@ -44,7 +44,6 @@ public class NotifHandler extends ContextWrapper {
         return new NotificationCompat.Builder(getApplicationContext(), ChannelID)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setVibrate(new long[] { 0, 1000, 1000, 1000, 1000})
                 .setSmallIcon(R.drawable.ic_alarm_green);
 
     }
