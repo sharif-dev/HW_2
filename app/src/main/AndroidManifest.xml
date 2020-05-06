@@ -33,7 +33,7 @@
 
         <service android:name=".MotionDetector" />
 
-        <receiver android:name=".AlertReceiver" />
+        <receiver android:name=".MyReceiver" />
     </application>
 
 </manifest>
